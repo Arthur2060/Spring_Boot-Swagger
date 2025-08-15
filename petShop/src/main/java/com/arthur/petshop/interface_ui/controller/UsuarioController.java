@@ -24,6 +24,12 @@ public class UsuarioController {
         return ResponseEntity.ok(service.listarTodos());
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar por id", description = "Retorna um unico usuario referente ao ID buscado")
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
     @PostMapping
     @Operation(summary = "Cadastrar usuario",
             description = "Cadastra um novo usuario no sistema")
