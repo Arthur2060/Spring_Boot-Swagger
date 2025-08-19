@@ -5,8 +5,7 @@ import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.domain.enums.Sexo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public record UsuarioDTO(
         @Schema(description = "Nome do usuario", example = "Pedro")
@@ -24,7 +23,7 @@ public record UsuarioDTO(
         @Schema(description = "Sexo do usuario, definido por enum", example = "M")
         Sexo sexo,
 
-        @Schema(description = "Lista de IDs dos animais de estimação do usuario", example="[1, 2, 4]")
+        @Schema(description = "Lista de IDs dos animais de estimação do usuario", example = "[1, 2, 4]")
         List<Long> pets
 ) {
     public Usuario fromDTO() {
@@ -46,10 +45,12 @@ public record UsuarioDTO(
                 usuario.getEmail(),
                 usuario.getTelefone(),
                 usuario.getSexo(),
-                usuario.getPets()
-                        .stream()
-                        .map(Pet::getId)
-                        .toList()
+                new ArrayList<>(
+                        usuario.getPets()
+                                .stream()
+                                .map(Pet::getId)
+                                .toList()
+                )
         );
     }
 }
