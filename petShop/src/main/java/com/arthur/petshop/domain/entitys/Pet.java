@@ -1,10 +1,7 @@
 package com.arthur.petshop.domain.entitys;
 
 import com.arthur.petshop.domain.enums.Especies;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,7 @@ public class Pet {
     private String nome;
     private Especies especie;
     private String nota;
+
+    @ManyToOne
+    private Usuario dono;
 }

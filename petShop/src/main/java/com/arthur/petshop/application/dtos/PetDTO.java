@@ -13,7 +13,11 @@ public record PetDTO(
 
         @Schema(description = "Notas opcionais que podem afetar o atendimento veterinario",
                 example = "Sem um olho, Sem uma pata, diabético")
-        String nota
+        String nota,
+
+        @Schema(description = "Numero de Id do usuario dono do Pet",
+                example="3")
+        Long dono
 ) {
     public Pet fromDTO() {
         Pet pet = new Pet();
@@ -29,7 +33,8 @@ public record PetDTO(
         return new PetDTO(
                 pet.getNome(),
                 pet.getEspecie(),
-                pet.getNota()
+                pet.getNota(),
+                pet.getDono().getId()
         );
     }
 }

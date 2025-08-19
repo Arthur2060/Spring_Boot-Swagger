@@ -1,16 +1,14 @@
 package com.arthur.petshop.domain.entitys;
 
 import com.arthur.petshop.domain.enums.Sexo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,4 +25,7 @@ public class Usuario {
     private String email;
     private String telefone;
     private Sexo sexo;
+
+    @OneToMany
+    private List<Pet> pets;
 }
