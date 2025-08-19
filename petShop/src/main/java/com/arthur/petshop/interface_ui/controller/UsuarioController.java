@@ -1,5 +1,6 @@
 package com.arthur.petshop.interface_ui.controller;
 
+import com.arthur.petshop.application.dtos.PetDTO;
 import com.arthur.petshop.application.dtos.UsuarioDTO;
 import com.arthur.petshop.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,12 @@ public class UsuarioController {
     @Operation(summary = "Buscar por id", description = "Retorna um unico usuario referente ao ID buscado")
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @GetMapping("/{id}/pet")
+    @Operation(summary = "Listar pets por id", description = "Retorna todos os pets pertencentes aquele usuario")
+    public ResponseEntity<List<PetDTO>> listarPetsPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarTodosOsPet(id));
     }
 
     @PostMapping

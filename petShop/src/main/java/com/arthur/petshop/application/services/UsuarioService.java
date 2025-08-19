@@ -1,8 +1,10 @@
 package com.arthur.petshop.application.services;
 
 
+import com.arthur.petshop.application.dtos.PetDTO;
 import com.arthur.petshop.application.dtos.UsuarioDTO;
 import com.arthur.petshop.domain.entitys.Usuario;
+import com.arthur.petshop.infraestructure.repositories.PetRepository;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -17,6 +20,9 @@ import java.util.stream.Collectors;
 public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private PetRepository petRepository;
 
     @Transactional
     public UsuarioDTO criarUsuario(UsuarioDTO dto) {
@@ -36,6 +42,19 @@ public class UsuarioService {
                 .stream()
                 .map(UsuarioDTO::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<PetDTO> listarTodosOsPet(Long id) {
+        Optional<Usuario> optUsuario = repository.findById(id);
+
+        if (optUsuario.isPresent()) {
+            return optUsuario.get().getPets()
+                    .stream()
+                    .map(PetDTO::toDTO)
+                    .toList();
+        } else {
+            throw new EntityNotFoundException("Usuario não encontrado");
+        }
     }
 
     @Transactional
