@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
-@Tag(name = "Usuario", description = "Realiza operações referentes a manipulação de dados da entidade usuario")
+@Tag(name = "Usuario Controller", description = "Realiza operações referentes a manipulação de dados da entidade usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService service;
