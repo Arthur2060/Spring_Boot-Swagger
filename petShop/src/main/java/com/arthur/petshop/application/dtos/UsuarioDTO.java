@@ -5,6 +5,7 @@ import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.domain.enums.Sexo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public record UsuarioDTO(
@@ -12,7 +13,7 @@ public record UsuarioDTO(
         String nome,
 
         @Schema(description = "Data de nascimento do usuario", example = "12-05-2005")
-        Date nascimento,
+        LocalDate nascimento,
 
         @Schema(description = "E-mail para contato do usuario", example = "pedro.bertoncelo@gmail.com")
         String email,
