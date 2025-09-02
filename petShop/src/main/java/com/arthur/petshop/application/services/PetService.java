@@ -1,7 +1,6 @@
 package com.arthur.petshop.application.services;
 
 import com.arthur.petshop.application.dtos.PetDTO;
-import com.arthur.petshop.application.dtos.UsuarioDTO;
 import com.arthur.petshop.domain.entitys.Pet;
 import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.domain.exception.DonoNaoEncontrado;
@@ -9,7 +8,6 @@ import com.arthur.petshop.infraestructure.repositories.PetRepository;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +16,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class PetService {
-    @Autowired
-    private PetRepository repository;
+    private final PetRepository petRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+
+    public PetService(PetRepository petRepository, UsuarioRepository usuarioRepository) {
+        this.petRepository = petRepository;
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Transactional
     public PetDTO criarPet(PetDTO dto) {
-        Pet pet = dto.fromDTO();
+        Pet pet = dto.toEntity();
 
         Optional<Usuario> optDono = usuarioRepository.findById(dto.dono());
 
@@ -36,26 +37,26 @@ public class PetService {
             throw new DonoNaoEncontrado("Usuario referenciado como dono não encontrado!");
         }
 
-        Pet salvo = repository.save(pet);
-        return PetDTO.toDTO(salvo);
+        Pet salvo = petRepository.save(pet);
+        return PetDTO.fromEntity(salvo);
     }
 
     public PetDTO buscarPorId(Long id) {
-        Pet pet = repository.findById(id)
+        Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pet não encontrado com ID: " + id));
-        return PetDTO.toDTO(pet);
+        return PetDTO.fromEntity(pet);
     }
 
     public List<PetDTO> listarTodos() {
-        return repository.findAll()
+        return petRepository.findAll()
                 .stream()
-                .map(PetDTO::toDTO)
+                .map(PetDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public PetDTO atualizarPet(Long id, PetDTO dto) {
-        Pet pet = repository.findById(id)
+        Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pet não encontrado com ID: " + id));
 
         pet.setNome(dto.nome());
@@ -72,15 +73,15 @@ public class PetService {
             }
         }
 
-        Pet atualizado = repository.save(pet);
-        return PetDTO.toDTO(atualizado);
+        Pet atualizado = petRepository.save(pet);
+        return PetDTO.fromEntity(atualizado);
     }
 
     @Transactional
     public void deletarPet(Long id) {
-        if (!repository.existsById(id)) {
+        if (!petRepository.existsById(id)) {
             throw new EntityNotFoundException("Pet não encontrado com ID: " + id);
         }
-        repository.deleteById(id);
+        petRepository.deleteById(id);
     }
 }

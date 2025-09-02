@@ -19,7 +19,7 @@ public record PetDTO(
                 example="3")
         Long dono
 ) {
-    public Pet fromDTO() {
+    public Pet toEntity() {
         Pet pet = new Pet();
 
         pet.setNome(nome);
@@ -29,7 +29,7 @@ public record PetDTO(
         return pet;
     }
 
-    public static PetDTO toDTO(Pet pet) {
+    public static PetDTO fromEntity(Pet pet) {
         return new PetDTO(
                 pet.getNome(),
                 pet.getEspecie(),

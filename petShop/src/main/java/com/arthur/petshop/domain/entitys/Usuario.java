@@ -1,6 +1,7 @@
 package com.arthur.petshop.domain.entitys;
 
 import com.arthur.petshop.domain.enums.Sexo;
+import com.arthur.petshop.domain.exception.IdadeInvalida;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -29,4 +31,10 @@ public class Usuario {
 
     @OneToMany
     private List<Pet> pets;
+
+    public void verificarIdade() {
+        if (ChronoUnit.YEARS.between(this.nascimento, LocalDate.now()) < 18) {
+            throw new IdadeInvalida("Usuario menor de idade");
+        }
+    }
 }

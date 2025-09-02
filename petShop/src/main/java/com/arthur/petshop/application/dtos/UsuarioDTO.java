@@ -22,36 +22,28 @@ public record UsuarioDTO(
         String telefone,
 
         @Schema(description = "Sexo do usuario, definido por enum", example = "M")
-        Sexo sexo,
-
-        @Schema(description = "Lista de IDs dos animais de estimação do usuario", example = "[1, 2, 4]")
-        List<Long> pets
+        Sexo sexo
 ) {
-    public Usuario fromDTO() {
+    public Usuario toEntity() {
         Usuario usuario = new Usuario();
 
-        usuario.setNome(this.nome);
-        usuario.setSexo(this.sexo);
-        usuario.setEmail(this.email);
-        usuario.setTelefone(this.telefone);
-        usuario.setNascimento(this.nascimento);
+        usuario.setNome(nome);
+        usuario.setSexo(sexo);
+        usuario.setEmail(email);
+        usuario.setTelefone(telefone);
+        usuario.setNascimento(nascimento);
+        usuario.setPets(new ArrayList<>());
 
         return usuario;
     }
 
-    public static UsuarioDTO toDTO(Usuario usuario) {
+    public static UsuarioDTO fromEntity(Usuario usuario) {
         return new UsuarioDTO(
                 usuario.getNome(),
                 usuario.getNascimento(),
                 usuario.getEmail(),
                 usuario.getTelefone(),
-                usuario.getSexo(),
-                new ArrayList<>(
-                        usuario.getPets()
-                                .stream()
-                                .map(Pet::getId)
-                                .toList()
-                )
+                usuario.getSexo()
         );
     }
 }
