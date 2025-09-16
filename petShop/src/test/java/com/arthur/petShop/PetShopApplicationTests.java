@@ -1,6 +1,8 @@
 package com.arthur.petShop;
 
-import com.arthur.petshop.application.dtos.UsuarioDTO;
+import com.arthur.petshop.application.dtos.request.UsuarioCreateRequest;
+import com.arthur.petshop.application.dtos.response.UsuarioResponse;
+import com.arthur.petshop.application.mapper.UsuarioMapper;
 import com.arthur.petshop.application.services.UsuarioService;
 import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.domain.enums.Sexo;
@@ -16,9 +18,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,14 +32,9 @@ class PetShopApplicationTests {
 	@InjectMocks
 	private UsuarioService service;
 
-	@BeforeEach
-	void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
-
 	@Test
 	void deveCriarUsuario() {
-		UsuarioDTO dto = new UsuarioDTO(
+		UsuarioCreateRequest dto = new UsuarioCreateRequest(
 				"Arthur",
 				LocalDate.of(2006, 5, 17),
 				"arthur@gmail.com",
@@ -45,13 +42,17 @@ class PetShopApplicationTests {
 				Sexo.M
 		);
 
-		UsuarioDTO salvo = service.criarUsuario(dto);
+		Usuario entidade = UsuarioMapper.toEntity(dto);
+
+		when(repository.save(any())).thenReturn(entidade);
+
+		UsuarioResponse salvo = service.criarUsuario(dto);
 		assertNotNull(salvo);
 	}
 
 	@Test
 	void deveSerMaior() {
-		UsuarioDTO dto = new UsuarioDTO(
+		UsuarioCreateRequest dto = new UsuarioCreateRequest(
 				"Pedro",
 				LocalDate.of(2020, 5, 17),
 				"pedro@gmail.com",
@@ -64,19 +65,10 @@ class PetShopApplicationTests {
 
 	@Test
 	void deletarUsuario() {
-		UsuarioDTO dto = new UsuarioDTO(
-				"Pedro",
-				LocalDate.of(2006, 5, 17),
-				"pedro@gmail.com",
-				"000000000",
-				Sexo.M
-		);
+		when(repository.existsById(1L)).thenReturn(true);
 
-		UsuarioDTO salvo = service.criarUsuario(dto);
-		assertNotNull(salvo);
+		service.deletarUsuario(1L);
 
-		service.deletarUsuario(salvo.id());
-
-		assertThrows(EntityNotFoundException.class, () -> service.buscarPorId());
+		verify(repository).deleteById(1L);
 	}
 }

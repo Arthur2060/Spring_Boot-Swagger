@@ -1,7 +1,8 @@
 package com.arthur.petshop.interface_ui.controller;
 
-import com.arthur.petshop.application.dtos.PetDTO;
-import com.arthur.petshop.application.dtos.UsuarioDTO;
+import com.arthur.petshop.application.dtos.request.UsuarioCreateRequest;
+import com.arthur.petshop.application.dtos.response.PetResponse;
+import com.arthur.petshop.application.dtos.response.UsuarioResponse;
 import com.arthur.petshop.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,33 +22,33 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Listar todos os usuarios",
             description = "Faz uma lista de todos os usuarios cadastrados no sistema.")
-    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+    public ResponseEntity<List<UsuarioResponse>> listarUsuarios() {
         return ResponseEntity.ok(service.listarTodos());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar por id", description = "Retorna um unico usuario referente ao ID buscado")
-    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @GetMapping("/{id}/pet")
     @Operation(summary = "Listar pets por id", description = "Retorna todos os pets pertencentes aquele usuario")
-    public ResponseEntity<List<PetDTO>> listarPetsPorId(@PathVariable Long id) {
+    public ResponseEntity<List<PetResponse>> listarPetsPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarTodosOsPet(id));
     }
 
     @PostMapping
     @Operation(summary = "Cadastrar usuario",
             description = "Cadastra um novo usuario no sistema")
-    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioResponse> cadastrarUsuario(@RequestBody UsuarioCreateRequest dto) {
         return ResponseEntity.ok(service.criarUsuario(dto));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar usuario",
             description = "Altera as informações de um usuario no sistema")
-    public ResponseEntity<UsuarioDTO> atualizarUsuario(@RequestBody UsuarioDTO dto, @PathVariable Long id) {
+    public ResponseEntity<UsuarioResponse> atualizarUsuario(@RequestBody UsuarioCreateRequest dto, @PathVariable Long id) {
         return ResponseEntity.ok(service.atualizarUsuario(id, dto));
     }
 

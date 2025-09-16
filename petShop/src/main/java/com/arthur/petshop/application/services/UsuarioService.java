@@ -1,17 +1,17 @@
 package com.arthur.petshop.application.services;
 
 
-import com.arthur.petshop.application.dtos.PetDTO;
-import com.arthur.petshop.application.dtos.UsuarioDTO;
-import com.arthur.petshop.domain.entitys.Pet;
+import com.arthur.petshop.application.dtos.request.UsuarioCreateRequest;
+import com.arthur.petshop.application.dtos.response.PetResponse;
+import com.arthur.petshop.application.dtos.response.UsuarioResponse;
+import com.arthur.petshop.application.mapper.PetMapper;
+import com.arthur.petshop.application.mapper.UsuarioMapper;
 import com.arthur.petshop.domain.entitys.Usuario;
-import com.arthur.petshop.infraestructure.repositories.PetRepository;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,33 +26,32 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioDTO criarUsuario(UsuarioDTO dto) {
-        Usuario usuario = dto.toEntity();
+    public UsuarioResponse criarUsuario(UsuarioCreateRequest dto) {
+        Usuario usuario = UsuarioMapper.toEntity(dto);
         usuario.verificarIdade();
-        usuarioRepository.save(usuario);
-        return UsuarioDTO.fromEntity(usuario);
+        return UsuarioMapper.fromEntity(usuarioRepository.save(usuario));
     }
 
-    public UsuarioDTO buscarPorId(Long id) {
+    public UsuarioResponse buscarPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
-        return UsuarioDTO.fromEntity(usuario);
+        return UsuarioMapper.fromEntity(usuario);
     }
 
-    public List<UsuarioDTO> listarTodos() {
+    public List<UsuarioResponse> listarTodos() {
         return usuarioRepository.findAll()
                 .stream()
-                .map(UsuarioDTO::fromEntity)
+                .map(UsuarioMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    public List<PetDTO> listarTodosOsPet(Long id) {
+    public List<PetResponse> listarTodosOsPet(Long id) {
         Optional<Usuario> optUsuario = usuarioRepository.findById(id);
 
         if (optUsuario.isPresent()) {
             return optUsuario.get().getPets()
                     .stream()
-                    .map(PetDTO::fromEntity)
+                    .map(PetMapper::fromEntity)
                     .toList();
         } else {
             throw new EntityNotFoundException("Usuario não encontrado");
@@ -60,7 +59,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioDTO atualizarUsuario(Long id, UsuarioDTO dto) {
+    public UsuarioResponse atualizarUsuario(Long id, UsuarioCreateRequest dto) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
@@ -71,7 +70,7 @@ public class UsuarioService {
         usuario.setSexo(dto.sexo());
 
         Usuario atualizado = usuarioRepository.save(usuario);
-        return UsuarioDTO.fromEntity(atualizado);
+        return UsuarioMapper.fromEntity(atualizado);
     }
 
     @Transactional

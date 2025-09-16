@@ -1,6 +1,8 @@
 package com.arthur.petshop.application.services;
 
-import com.arthur.petshop.application.dtos.PetDTO;
+import com.arthur.petshop.application.dtos.request.PetCreateRequest;
+import com.arthur.petshop.application.dtos.response.PetResponse;
+import com.arthur.petshop.application.mapper.PetMapper;
 import com.arthur.petshop.domain.entitys.Pet;
 import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.domain.exception.DonoNaoEncontrado;
@@ -26,8 +28,8 @@ public class PetService {
     }
 
     @Transactional
-    public PetDTO criarPet(PetDTO dto) {
-        Pet pet = dto.toEntity();
+    public PetResponse criarPet(PetCreateRequest dto) {
+        Pet pet = PetMapper.toEntity(dto);
 
         Optional<Usuario> optDono = usuarioRepository.findById(dto.dono());
 
@@ -38,24 +40,24 @@ public class PetService {
         }
 
         Pet salvo = petRepository.save(pet);
-        return PetDTO.fromEntity(salvo);
+        return PetMapper.fromEntity(salvo);
     }
 
-    public PetDTO buscarPorId(Long id) {
+    public PetResponse buscarPorId(Long id) {
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pet não encontrado com ID: " + id));
-        return PetDTO.fromEntity(pet);
+        return PetMapper.fromEntity(pet);
     }
 
-    public List<PetDTO> listarTodos() {
+    public List<PetResponse> listarTodos() {
         return petRepository.findAll()
                 .stream()
-                .map(PetDTO::fromEntity)
+                .map(PetMapper::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public PetDTO atualizarPet(Long id, PetDTO dto) {
+    public PetResponse atualizarPet(Long id, PetCreateRequest dto) {
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pet não encontrado com ID: " + id));
 
@@ -74,7 +76,7 @@ public class PetService {
         }
 
         Pet atualizado = petRepository.save(pet);
-        return PetDTO.fromEntity(atualizado);
+        return PetMapper.fromEntity(atualizado);
     }
 
     @Transactional

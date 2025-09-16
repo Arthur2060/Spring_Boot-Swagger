@@ -1,10 +1,11 @@
-package com.arthur.petshop.application.dtos;
+package com.arthur.petshop.application.dtos.response;
 
-import com.arthur.petshop.domain.entitys.Pet;
 import com.arthur.petshop.domain.enums.Especies;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record PetDTO(
+public record PetResponse(
+        Long id,
+
         @Schema(description = "Nome do animal", example = "Bob")
         String nome,
 
@@ -19,22 +20,4 @@ public record PetDTO(
                 example="3")
         Long dono
 ) {
-    public Pet toEntity() {
-        Pet pet = new Pet();
-
-        pet.setNome(nome);
-        pet.setNota(nota);
-        pet.setEspecie(especie);
-
-        return pet;
-    }
-
-    public static PetDTO fromEntity(Pet pet) {
-        return new PetDTO(
-                pet.getNome(),
-                pet.getEspecie(),
-                pet.getNota(),
-                pet.getDono().getId()
-        );
-    }
 }
