@@ -4,8 +4,9 @@ import com.arthur.petshop.domain.enums.Sexo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public record UsuarioResponse(
+public record ClienteResponse(
         Long id,
 
         @Schema(description = "Nome do usuario", example = "Pedro")
@@ -21,6 +22,9 @@ public record UsuarioResponse(
         String telefone,
 
         @Schema(description = "Sexo do usuario, definido por enum", example = "M")
-        Sexo sexo
+        Sexo sexo,
+
+        @Schema(description = "Lista de pets pertencentes a esse cliente", example = "Nina, Bob")
+        List<PetResponse> pets
 ) {
 }

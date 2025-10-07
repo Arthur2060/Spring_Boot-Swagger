@@ -22,5 +22,5 @@ public class Pet {
     private String nota;
 
     @ManyToOne
-    private Usuario dono;
+    private Cliente dono;
 }

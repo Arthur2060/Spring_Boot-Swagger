@@ -1,7 +1,6 @@
 package com.arthur.petshop.domain.entitys;
 
 import com.arthur.petshop.domain.enums.Sexo;
-import com.arthur.petshop.domain.exception.IdadeInvalida;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,32 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_de_usuario", discriminatorType = DiscriminatorType.STRING)
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Usuario {
+public abstract class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
-    private String nome;
-    private LocalDate nascimento;
-    private String email;
-    private String telefone;
-    private Sexo sexo;
-
-    @OneToMany
-    private List<Pet> pets;
-
-    public void verificarIdade() {
-        if (ChronoUnit.YEARS.between(this.nascimento, LocalDate.now()) < 18) {
-            throw new IdadeInvalida("Usuario menor de idade");
-        }
-    }
+    protected String nome;
+    protected LocalDate nascimento;
+    protected String email;
+    protected String telefone;
+    protected Sexo sexo;
 }

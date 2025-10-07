@@ -1,5 +1,6 @@
 package com.arthur.petshop.infraestructure.security;
 
+import com.arthur.petshop.domain.entitys.Cliente;
 import com.arthur.petshop.domain.entitys.Usuario;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

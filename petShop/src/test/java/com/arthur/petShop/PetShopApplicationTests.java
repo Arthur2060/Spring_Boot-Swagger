@@ -1,20 +1,17 @@
 package com.arthur.petShop;
 
-import com.arthur.petshop.application.dtos.request.UsuarioCreateRequest;
-import com.arthur.petshop.application.dtos.response.UsuarioResponse;
+import com.arthur.petshop.application.dtos.request.ClienteCreateRequest;
+import com.arthur.petshop.application.dtos.response.ClienteResponse;
 import com.arthur.petshop.application.mapper.UsuarioMapper;
-import com.arthur.petshop.application.services.UsuarioService;
-import com.arthur.petshop.domain.entitys.Usuario;
+import com.arthur.petshop.application.services.ClienteService;
+import com.arthur.petshop.domain.entitys.Cliente;
 import com.arthur.petshop.domain.enums.Sexo;
 import com.arthur.petshop.domain.exception.IdadeInvalida;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -30,11 +27,11 @@ class PetShopApplicationTests {
 	private UsuarioRepository repository;
 
 	@InjectMocks
-	private UsuarioService service;
+	private ClienteService service;
 
 	@Test
 	void deveCriarUsuario() {
-		UsuarioCreateRequest dto = new UsuarioCreateRequest(
+		ClienteCreateRequest dto = new ClienteCreateRequest(
 				"Arthur",
 				LocalDate.of(2006, 5, 17),
 				"arthur@gmail.com",
@@ -42,17 +39,17 @@ class PetShopApplicationTests {
 				Sexo.M
 		);
 
-		Usuario entidade = UsuarioMapper.toEntity(dto);
+		Cliente entidade = UsuarioMapper.toEntity(dto);
 
 		when(repository.save(any())).thenReturn(entidade);
 
-		UsuarioResponse salvo = service.criarUsuario(dto);
+		ClienteResponse salvo = service.criarUsuario(dto);
 		assertNotNull(salvo);
 	}
 
 	@Test
 	void deveSerMaior() {
-		UsuarioCreateRequest dto = new UsuarioCreateRequest(
+		ClienteCreateRequest dto = new ClienteCreateRequest(
 				"Pedro",
 				LocalDate.of(2020, 5, 17),
 				"pedro@gmail.com",

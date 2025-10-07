@@ -1,5 +1,6 @@
 package com.arthur.petshop.infraestructure.repositories;
 
+import com.arthur.petshop.domain.entitys.Cliente;
 import com.arthur.petshop.domain.entitys.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 

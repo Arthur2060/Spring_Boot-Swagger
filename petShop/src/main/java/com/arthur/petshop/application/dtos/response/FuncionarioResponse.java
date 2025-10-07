@@ -1,11 +1,13 @@
-package com.arthur.petshop.application.dtos.request;
+package com.arthur.petshop.application.dtos.response;
 
 import com.arthur.petshop.domain.enums.Sexo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
-public record UsuarioCreateRequest(
+public record FuncionarioResponse(
+        Long id,
+
         @Schema(description = "Nome do usuario", example = "Pedro")
         String nome,
 

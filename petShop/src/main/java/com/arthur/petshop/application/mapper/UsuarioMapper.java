@@ -1,31 +1,34 @@
 package com.arthur.petshop.application.mapper;
 
-import com.arthur.petshop.application.dtos.request.UsuarioCreateRequest;
-import com.arthur.petshop.application.dtos.response.UsuarioResponse;
-import com.arthur.petshop.domain.entitys.Usuario;
+import com.arthur.petshop.application.dtos.request.ClienteCreateRequest;
+import com.arthur.petshop.application.dtos.response.ClienteResponse;
+import com.arthur.petshop.domain.entitys.Cliente;
 
 public class UsuarioMapper {
 
-    public static Usuario toEntity(UsuarioCreateRequest dto) {
-        Usuario usuario = new Usuario();
+    public static Cliente toEntity(ClienteCreateRequest dto) {
+        Cliente cliente = new Cliente();
 
-        usuario.setNome(dto.nome());
-        usuario.setSexo(dto.sexo());
-        usuario.setEmail(dto.email());
-        usuario.setTelefone(dto.telefone());
-        usuario.setNascimento(dto.nascimento());
+        cliente.setNome(dto.nome());
+        cliente.setSexo(dto.sexo());
+        cliente.setEmail(dto.email());
+        cliente.setTelefone(dto.telefone());
+        cliente.setNascimento(dto.nascimento());
 
-        return usuario;
+        return cliente;
     }
 
-    public static UsuarioResponse fromEntity(Usuario usuario) {
-        return new UsuarioResponse(
-                usuario.getId(),
-                usuario.getNome(),
-                usuario.getNascimento(),
-                usuario.getEmail(),
-                usuario.getTelefone(),
-                usuario.getSexo()
+    public static ClienteResponse fromEntity(Cliente cliente) {
+        return new ClienteResponse(
+                cliente.getId(),
+                cliente.getNome(),
+                cliente.getNascimento(),
+                cliente.getEmail(),
+                cliente.getTelefone(),
+                cliente.getSexo(),
+                cliente.getPets()
+                        .stream().map(PetMapper::fromEntity)
+                        .toList()
         );
     }
 }

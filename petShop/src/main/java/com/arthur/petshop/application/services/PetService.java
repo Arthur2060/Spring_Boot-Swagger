@@ -4,8 +4,9 @@ import com.arthur.petshop.application.dtos.request.PetCreateRequest;
 import com.arthur.petshop.application.dtos.response.PetResponse;
 import com.arthur.petshop.application.mapper.PetMapper;
 import com.arthur.petshop.domain.entitys.Pet;
-import com.arthur.petshop.domain.entitys.Usuario;
+import com.arthur.petshop.domain.entitys.Cliente;
 import com.arthur.petshop.domain.exception.DonoNaoEncontrado;
+import com.arthur.petshop.infraestructure.repositories.ClienteRepository;
 import com.arthur.petshop.infraestructure.repositories.PetRepository;
 import com.arthur.petshop.infraestructure.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,18 +21,18 @@ import java.util.stream.Collectors;
 public class PetService {
     private final PetRepository petRepository;
 
-    private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
 
-    public PetService(PetRepository petRepository, UsuarioRepository usuarioRepository) {
+    public PetService(PetRepository petRepository, ClienteRepository clienteRepository) {
         this.petRepository = petRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Transactional
     public PetResponse criarPet(PetCreateRequest dto) {
         Pet pet = PetMapper.toEntity(dto);
 
-        Optional<Usuario> optDono = usuarioRepository.findById(dto.dono());
+        Optional<Cliente> optDono = clienteRepository.findById(dto.dono());
 
         if (optDono.isPresent()) {
             pet.setDono(optDono.get());
@@ -66,7 +67,7 @@ public class PetService {
         pet.setNota(dto.nota());
 
         if (!pet.getDono().getId().equals(dto.dono())) {
-            Optional<Usuario> optDono = usuarioRepository.findById(dto.dono());
+            Optional<Cliente> optDono = clienteRepository.findById(dto.dono());
 
             if (optDono.isPresent()) {
                 pet.setDono(optDono.get());
