@@ -43,7 +43,7 @@ class PetShopApplicationTests {
 
 		when(repository.save(any())).thenReturn(entidade);
 
-		ClienteResponse salvo = service.criarUsuario(dto);
+		ClienteResponse salvo = service.criarCliente(dto);
 		assertNotNull(salvo);
 	}
 
@@ -57,14 +57,14 @@ class PetShopApplicationTests {
 				Sexo.M
 		);
 
-		assertThrows(IdadeInvalida.class, () -> service.criarUsuario(dto));
+		assertThrows(IdadeInvalida.class, () -> service.criarCliente(dto));
 	}
 
 	@Test
 	void deletarUsuario() {
 		when(repository.existsById(1L)).thenReturn(true);
 
-		service.deletarUsuario(1L);
+		service.deletarCliente(1L);
 
 		verify(repository).deleteById(1L);
 	}

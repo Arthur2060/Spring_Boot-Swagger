@@ -23,13 +23,6 @@ import java.util.stream.Collectors;
 public class ClienteService {
     private final ClienteRepository clienteRepository;
 
-    @Transactional
-    public ClienteResponse criarUsuario(ClienteCreateRequest dto) {
-        Cliente cliente = UsuarioMapper.toEntity(dto);
-        cliente.verificarIdade();
-        return UsuarioMapper.fromEntity(clienteRepository.save(cliente));
-    }
-
     public ClienteResponse buscarPorId(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
@@ -57,7 +50,14 @@ public class ClienteService {
     }
 
     @Transactional
-    public ClienteResponse atualizarUsuario(Long id, ClienteCreateRequest dto) {
+    public ClienteResponse criarCliente(ClienteCreateRequest dto) {
+        Cliente cliente = UsuarioMapper.toEntity(dto);
+        cliente.verificarIdade();
+        return UsuarioMapper.fromEntity(clienteRepository.save(cliente));
+    }
+
+    @Transactional
+    public ClienteResponse atualizarCliente(Long id, ClienteCreateRequest dto) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
@@ -72,7 +72,7 @@ public class ClienteService {
     }
 
     @Transactional
-    public void deletarUsuario(Long id) {
+    public void deletarCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
             throw new EntityNotFoundException("Usuário não encontrado com ID: " + id);
         }
