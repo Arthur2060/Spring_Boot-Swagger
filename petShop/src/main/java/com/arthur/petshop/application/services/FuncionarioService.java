@@ -4,6 +4,7 @@ import com.arthur.petshop.application.dtos.request.FuncionarioCreateRequest;
 import com.arthur.petshop.application.dtos.response.FuncionarioResponse;
 import com.arthur.petshop.application.mapper.FuncionarioMapper;
 import com.arthur.petshop.domain.entitys.Funcionario;
+import com.arthur.petshop.domain.enums.Role;
 import com.arthur.petshop.infraestructure.repositories.FuncionarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class FuncionarioService {
         funcionario.setSexo(request.sexo());
         funcionario.setTelefone(request.telefone());
         funcionario.setNascimento(request.nascimento());
+        funcionario.setRole(Role.FUNCIONARIO);
 
         return FuncionarioMapper.fromEntity(funcionarioRepository.save(funcionario));
     }

@@ -1,5 +1,6 @@
 package com.arthur.petshop.domain.entitys;
 
+import com.arthur.petshop.domain.enums.Role;
 import com.arthur.petshop.domain.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,4 +28,5 @@ public abstract class Usuario {
     protected String email;
     protected String telefone;
     protected Sexo sexo;
+    protected Role role;
 }

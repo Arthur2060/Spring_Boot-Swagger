@@ -7,6 +7,7 @@ import com.arthur.petshop.application.dtos.response.ClienteResponse;
 import com.arthur.petshop.application.mapper.PetMapper;
 import com.arthur.petshop.application.mapper.UsuarioMapper;
 import com.arthur.petshop.domain.entitys.Cliente;
+import com.arthur.petshop.domain.enums.Role;
 import com.arthur.petshop.infraestructure.repositories.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -53,6 +54,7 @@ public class ClienteService {
     public ClienteResponse criarCliente(ClienteCreateRequest dto) {
         Cliente cliente = UsuarioMapper.toEntity(dto);
         cliente.verificarIdade();
+        cliente.setRole(Role.CLIENTE);
         return UsuarioMapper.fromEntity(clienteRepository.save(cliente));
     }
 
